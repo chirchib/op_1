@@ -9,7 +9,10 @@ public:
 	{}
 
 	Account(double _balance) : balance(_balance)
-	{}
+	{
+		if (_balance < 0)
+			balance = 0;
+	}
 
 	double getBalance()
 	{
@@ -18,57 +21,63 @@ public:
 
 	double credit(double _credit)
 	{
-		balance += _credit;
-		return balance;
+		return balance += _credit;
 	}
 
-	void debit();
+	double debit(double _debit)
+	{
+		return balance -= _debit;
+	}
 
-	void menu();
-
-	~Account();
+	~Account()
+	{
+		cout << "\nSee you next time!" << endl;
+	}
 
 private:
 	double balance;
-	double commision;
 };
 
-void  menu(double _bill) 
+void menu(double _bill)
 {
 	Account Dmitry(_bill);
-	char num;
+	int num;
 	cout << "What woulde you like? Please enter number." << endl;
 	cout << "1. Credit.\n2. Debit.\n3. Quite." << endl;
 	cin >> num;
 	switch (num) {
 	case 1:
-		int putMoney;
+		double putMoney;
 		cout << "How much do you want to put money into the account?" << endl;
 		cin >> putMoney;
-		cout << "Your current account balance is - " << credit(putMoney) << "$" << endl;
-		menu();
+		cout << "Your current account balance is - " << Dmitry.credit(putMoney) << "$" << endl;
+		menu(Dmitry.getBalance());
+		break;
 	case 2:
 		double withdrawMoney;
 		cout << "How much do you want to withdraw money from the account?" << endl;
 		cin >> withdrawMoney;
-		if (withdrawMoney > getBalance())
+		if (withdrawMoney > Dmitry.getBalance())
 		{
 			cout << "The requested amount exceeds the account balance." << endl;
-			menu();
+			menu(Dmitry.getBalance());
 		}
-		else 
-			cout << "Your current account balance is - " << debit(withdrawMoney) << "$" << endl;
-		return;
+		else
+			cout << "Your current account balance is - " << Dmitry.debit(withdrawMoney) << "$" << endl;
+		menu(Dmitry.getBalance());
+		break;
 	case 3:
-		return;
+		break;
 	default:
 		cout << "Your choice is incorrect. Please enter the number again." << endl;
-		menu();
+		menu(Dmitry.getBalance());
+		break;
 	}
 }
 
 
-int main() {
+int main()
+{
 	double bill;
 
 	cout << "Please enter the opening balance of the account." << endl;
@@ -77,112 +86,3 @@ int main() {
 
 	return 0;
 }
-
-
-//Account::Account(double openingBalance) {
-//	if (openingBalance >= 0) {
-//		Balance = openingBalance;
-//		cout << "Your the opening balance is - " << openingBalance << "$" << endl;
-//	}
-//	else {
-//		cout << "Opening balance was invalid." << endl;
-//		Balance = 0;
-//	}
-//	menu();
-//}
-//
-//void Account::getBalance() {
-//	cout << "Your current account balance is - " << Balance << "$" << endl;
-//}
-//
-//void Account::credit() {
-//	int putMoney;
-//	cout << "How much do you want to put money into the account?" << endl;
-//	cin >> putMoney;
-//	Balance += putMoney;
-//	getBalance();
-//	menu();
-//	return;
-//}
-//
-//void Account::debit() {
-//	double withdrawMoney;
-//	cout << "How much do you want to withdraw money from the account?" << endl;
-//	cin >> withdrawMoney;
-//	if (withdrawMoney > Balance)
-//		cout << "The requested amount exceeds the account balance." << endl;
-//	else Balance -= withdrawMoney;
-//	getBalance();
-//	menu();
-//	return;
-//}
-//
-//
-//
-//Account::~Account() {
-//	cout << "\nSee you next time!" << endl;
-//}
-//
-//Account_Sberbank::Account_Sberbank(double openBalance) :Account(openBalance)
-//{
-//	if (openBalance >= 0) {
-//		balance = openBalance;
-//		cout << "Your the opening balance is - " << openBalance << "$" << endl;
-//	}
-//	else {
-//		cout << "Opening balance was invalid." << endl;
-//		balance = 0;
-//	}
-//}
-//
-//void Account_Sberbank::deposit()
-//{
-//	double dep;
-//	cout << "How much do you want to make deposit?" << endl;
-//	cin >> dep;
-//	if (dep > balance)
-//		cout << "You have insufficient funds. Try again." << endl;
-//	else
-//	{
-//		balance -= dep;
-//		Deposit = dep;
-//		getBalance();
-//		getDeposit();
-//	}
-//	menuSber();
-//	return;
-//}
-//
-//void Account_Sberbank::getDeposit()
-//{
-//	cout << "Your deposit will be through: "
-//		<< "\nFirst year " << Deposit * 1, 1
-//		<< "\nsSecond year " << Deposit * 1, 1 ^ 2
-//		<< "\nThrird year " << Deposit * 1, 1 ^ 3
-//		<< "\nFourth year " << Deposit * 1, 1 ^ 4
-//		<< "\nFith year " << Deposit * 1, 1 ^ 5 << endl;
-//}
-//
-//void Account_Sberbank::menuSber()
-//{
-//	char num;
-//	cout << "Woulde you like? Please enter number." << endl;
-//	cout << "1. Credit.\n2. Debit.\n3. Deposit.\n0. Quite." << endl;
-//	cin >> num;
-//	switch (num) {
-//	case 1:
-//		credit();
-//		return;
-//	case 2:
-//		debit();
-//		return;
-//	case 3:
-//		deposit();
-//		return;
-//	case 0:
-//		return;
-//	default:
-//		cout << "Your choice is incorrect. Please enter the number again." << endl;
-//		menuSber();
-//	}
-//}
